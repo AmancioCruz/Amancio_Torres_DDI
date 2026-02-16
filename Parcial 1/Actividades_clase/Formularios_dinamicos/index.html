@@ -20,6 +20,15 @@
                 name="apellido"
                 placeholder="ingresa el Apellido"     
                 id="input_txt_apellido">
+        <br>
+        <label for="cantidad_correos">Ingrese la cantidad de correos que va a ingresar</label>        
+        <input type="number" name="cantidad_correos" 
+        id="cantidad_correos" onchange="cambiarNumero(event)">
+        <br>
+        <div class="contenedor_correos" id="contenedor_correos">
+            
+        </div>
+        <br>
         <button id="boton_guardar">Guardar Datos</button>
     </form>
 </body>
