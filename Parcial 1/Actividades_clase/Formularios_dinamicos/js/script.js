@@ -7,10 +7,10 @@ const boton_guardar =
 
 const Usuarios = [
     {
-        nombre: "",
-        apellido: "",
-        correo: "",
-        constraseña: "",
+        nombre: "Amancio",
+        apellido: "Torres",
+        correo: "amancio@gmail.com",
+        constraseña: "12345678",
     },
     {
 
