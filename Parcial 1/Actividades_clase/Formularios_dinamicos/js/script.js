@@ -5,6 +5,24 @@ const apellido =
 const boton_guardar =
         document.querySelector("#boton_guardar");
 
+const Usuarios = [
+    {
+        nombre: "",
+        apellido: "",
+        correo: "",
+        constraseña: "",
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    }
+];
+
 boton_guardar.addEventListener("click",(e)=>{
     e.preventDefault();
     
@@ -17,6 +35,14 @@ boton_guardar.addEventListener("click",(e)=>{
     const nombre_info = document.createElement("h2");
     nombre_info.textContent = usuario.nombre;
     document.body.appendChild(nombre_info);
+
+    guardarDatos(usuario);
+
+    guardarDatos = ()=> {
+        console.log("modificando funcion")
+    };
+
+    guardarDatos();
 
 })
 
@@ -38,10 +64,35 @@ function cambiarNumero(event){
     }
 }
 
+//definimos una clase con sus propiedades y metodos.
 class Usuario{
     constructor(nom, ape){
         this.nombre = nom; 
         this.apellido = ape;
     }
+
+    MostrarDatos(){
+        console.log(`Nombre: ${this.nombre}\n Apellido: ${this.apellido}`);
+    }
 }
+
+//creando un objeto y lo estamos asignando a una cosntante 
+let usuario2 = {
+    Nombre: "Amancio", 
+    Apellido: "Torres",
+    Edad: 28,
+    MostrarDatos: ()=>{
+        console.log(`Nombre: ${usuario2.Nombre} \nApellido: ${usuario2.Apellido}\nEdad: ${usuario2.Edad}`)
+    }
+}
+
+//nos permite guardar funciones dentro de una variable o constante
+let guardarDatos = (usuario)=>{
+    //llamamos un metodo definidio en una clase
+    usuario.MostrarDatos();
+    usuario2.MostrarDatos();
+    usuario2.Nombre = "nuevo nombre";
+    usuario2.MostrarDatos();
+}
+
  
