@@ -5,6 +5,8 @@ const apellido =
 const boton_guardar =
     document.querySelector("#boton_guardar");
 
+const formulario = document.querySelector("#form_2");
+
 const Usuarios = [
     {
         nombre: "Amancio",
@@ -128,9 +130,11 @@ function cambiarNumero(event) {
 
 //definimos una clase con sus propiedades y metodos.
 class Usuario {
-    constructor(nom, ape) {
+    constructor(nom, ape, correo, contra) {
         this.nombre = nom;
         this.apellido = ape;
+        this.correo = correo;
+        this.contraseña = contra;
     }
 
     MostrarDatos() {
@@ -201,8 +205,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contenedor_usuarios.appendChild(contenedor_usuario);
     }
-
-
 })
 
+function leerDatos(){
+    const datosFormulario = new FormData(formulario);
+
+    const datos = Object.fromEntries(datosFormulario.entries());
+
+    let usuarioNuevo = new Usuario(datos.nombre, datos.apellido, datos.correo, datos.contraseña);
+    console.log(usuarioNuevo);
+}
+
+//crear un formulario de inicio de session y registro, usar el metodo de leer datos por medio del FomData
+//validar qu ese hayan ingresado todos los datos en los formularios.
+//y de ahi que aparezca un cuadro con un texto que diga sesion Iniciada correctamente
 
