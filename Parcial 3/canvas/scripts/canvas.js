@@ -1,5 +1,8 @@
+import { Cuadrado } from "./figuras.js";
+
 const canvas = document.querySelector("#lienzo");
 const ctx = canvas.getContext("2d");
+const figuras = [];
 
 const posicionesCursor = {
     iniciales: { x: 0, y: 0 },
@@ -7,6 +10,10 @@ const posicionesCursor = {
 }
 
 let presionado = false;
+
+canvas.addEventListener("mousedown", (event) => alPresionarClick(event));
+canvas.addEventListener("mousemove", (event) => mientrasPrecionaClick(event));
+canvas.addEventListener("mouseup", (event) => alSoltarClick(event));
 
 /*
 ctx.fillRect();
@@ -50,9 +57,8 @@ function mientrasPrecionaClick(event) {
     //dibujarLinea();
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
-    if(presionado){
-        
-        dibujarLinea();
+    if (presionado) {
+
     }
     //console.log(posicionesCursor);
 }
@@ -61,12 +67,23 @@ function alSoltarClick(event) {
     console.log("se solto el boton click en el lienzo");
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
-    dibujarLinea();
+
+    const cuadro = new Cuadrado(
+        posicionesCursor, "green", "red", 10
+    );
+
+    figuras.push(cuadro);
+
+    cuadro.Dibujar(ctx);
+
+    console.log(figuras);
     presionado = false;
 }
 
+
+
 function dibujarLinea() {
-    ctx.clearRect(0,0, canvas.clientWidth, canvas.clientHeight);
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     ctx.beginPath();
     ctx.moveTo(posicionesCursor.iniciales.x, posicionesCursor.iniciales.y);
     ctx.lineTo(posicionesCursor.finales.x, posicionesCursor.finales.y);
