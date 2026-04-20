@@ -1,4 +1,4 @@
-import { Cuadrado } from "./figuras.js";
+import { Cuadrado, Linea, Sticker } from "./figuras.js";
 
 const canvas = document.querySelector("#lienzo");
 const ctx = canvas.getContext("2d");
@@ -58,7 +58,12 @@ function mientrasPrecionaClick(event) {
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
     if (presionado) {
-
+        const linea = new Linea(posicionesCursor, "blue");
+        linea.Dibujar(ctx);
+        //al finalizar el trazo de una linea le 
+        //decimo que el punto inicial de la siguiente es el final
+        posicionesCursor.iniciales.x = posicionesCursor.finales.x;
+        posicionesCursor.iniciales.y = posicionesCursor.finales.y;
     }
     //console.log(posicionesCursor);
 }
@@ -68,15 +73,20 @@ function alSoltarClick(event) {
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
 
-    const cuadro = new Cuadrado(
-        posicionesCursor, "green", "red", 10
-    );
+    const sticker = new Sticker(posicionesCursor, "../recursos/pikachu.png");
+    sticker.Dibujar(ctx);
 
-    figuras.push(cuadro);
-
-    cuadro.Dibujar(ctx);
-
-    console.log(figuras);
+    //const linea = new Linea(posicionesCursor, "blue");
+    //linea.Dibujar(ctx);
+    /* const cuadro = new Cuadrado(
+         posicionesCursor, "green", "red", 10
+     );
+ 
+     figuras.push(cuadro);
+ 
+     cuadro.Dibujar(ctx);
+ 
+     console.log(figuras);*/
     presionado = false;
 }
 
