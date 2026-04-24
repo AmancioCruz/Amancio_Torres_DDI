@@ -1,8 +1,17 @@
-import { Cuadrado, Linea, Sticker } from "./figuras.js";
+import { Cuadrado, Linea, Sticker, Circulo } from "./figuras.js";
 
 const canvas = document.querySelector("#lienzo");
 const ctx = canvas.getContext("2d");
-const figuras = [];
+const elementos = [];
+const opciones = {
+    pincel: false,
+    linea: false,
+    circulo: false,
+    cuadro: false,
+    triangulo: false,
+    borrador: false,
+    sticker: false,
+}
 
 const posicionesCursor = {
     iniciales: { x: 0, y: 0 },
@@ -14,6 +23,22 @@ let presionado = false;
 canvas.addEventListener("mousedown", (event) => alPresionarClick(event));
 canvas.addEventListener("mousemove", (event) => mientrasPrecionaClick(event));
 canvas.addEventListener("mouseup", (event) => alSoltarClick(event));
+
+document.querySelector("#btn_pincel").addEventListener("click", () => cambiarOpcion("pincel"))
+document.querySelector("#btn_linea").addEventListener("click", () => cambiarOpcion("linea"))
+document.querySelector("#btn_cuadro").addEventListener("click", () => cambiarOpcion("cuadro"))
+document.querySelector("#btn_circulo").addEventListener("click", () => cambiarOpcion("circulo"))
+document.querySelector("#btn_triangulo").addEventListener("click", () => cambiarOpcion("triangulo"))
+document.querySelector("#btn_sticker").addEventListener("click", () => cambiarOpcion("sticker"))
+document.querySelector("#btn_borrador").addEventListener("click", () => cambiarOpcion("borrador"))
+
+function cambiarOpcion(opcion) {
+    for (let clave in opciones) {
+        opciones[clave] = false
+    }
+    opciones[opcion] = true;
+    console.log(opciones);
+}
 
 /*
 ctx.fillRect();
@@ -57,13 +82,50 @@ function mientrasPrecionaClick(event) {
     //dibujarLinea();
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
+
     if (presionado) {
-        const linea = new Linea(posicionesCursor, "blue");
-        linea.Dibujar(ctx);
+        let elemento;
+        if (opciones.pincel) {
+            //opcion para dibujar con el pincel
+        }
+        else if (opciones.linea) {
+            //opcion para dibujar linea
+            elemento = new Linea(posicionesCursor,"blue", 5)
+        }
+        else if (opciones.cuadro) {
+            //opcion para dibujar un cudro
+            elemento = new Cuadrado(posicionesCursor,"blue", "red", 5);
+
+        }
+        else if (opciones.circulo) {
+            //opcion para dibujar un circulo
+            elemento = new Circulo(posicionesCursor,"blue", "red", 5);
+        }
+        else if (opciones.triangulo) {
+            //opcion para dibujar un triangulo
+
+        }
+        else if (opciones.sticker) {
+            //opcion para dibujar un sticker
+
+        }
+        else if (opciones.borrador) {
+            //opcion para dibujar borrar
+
+        }
+        else {
+
+        }
+
+        /*const linea = new Linea(posicionesCursor, "blue");
+        linea.Dibujar(ctx);*/
         //al finalizar el trazo de una linea le 
         //decimo que el punto inicial de la siguiente es el final
-        posicionesCursor.iniciales.x = posicionesCursor.finales.x;
-        posicionesCursor.iniciales.y = posicionesCursor.finales.y;
+
+        ctx.clearRect(0,0, canvas.clientWidth, canvas.clientHeight)
+        elemento.Dibujar(ctx);
+        //posicionesCursor.iniciales.x = posicionesCursor.finales.x;
+        //posicionesCursor.iniciales.y = posicionesCursor.finales.y;
     }
     //console.log(posicionesCursor);
 }
@@ -73,6 +135,7 @@ function alSoltarClick(event) {
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
 
+    console.log(opciones)
     const sticker = new Sticker(posicionesCursor, "../recursos/pikachu.png");
     sticker.Dibujar(ctx);
 
