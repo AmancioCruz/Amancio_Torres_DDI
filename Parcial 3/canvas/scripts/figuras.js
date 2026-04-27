@@ -1,3 +1,4 @@
+
 class Figura {
     constructor(posicionesCursor, color_linea, color_relleno, grozor_linea
     ) {

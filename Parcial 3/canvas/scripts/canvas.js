@@ -4,7 +4,7 @@ const canvas = document.querySelector("#lienzo");
 const ctx = canvas.getContext("2d");
 const elementos = [];
 const opciones = {
-    pincel: false,
+    pincel: true,
     linea: false,
     circulo: false,
     cuadro: false,
@@ -90,16 +90,16 @@ function mientrasPrecionaClick(event) {
         }
         else if (opciones.linea) {
             //opcion para dibujar linea
-            elemento = new Linea(posicionesCursor,"blue", 5)
+            elemento = new Linea(posicionesCursor, "blue", 5)
         }
         else if (opciones.cuadro) {
             //opcion para dibujar un cudro
-            elemento = new Cuadrado(posicionesCursor,"blue", "red", 5);
+            elemento = new Cuadrado(posicionesCursor, "blue", "red", 5);
 
         }
         else if (opciones.circulo) {
             //opcion para dibujar un circulo
-            elemento = new Circulo(posicionesCursor,"blue", "red", 5);
+            elemento = new Circulo(posicionesCursor, "blue", "red", 5);
         }
         else if (opciones.triangulo) {
             //opcion para dibujar un triangulo
@@ -107,6 +107,7 @@ function mientrasPrecionaClick(event) {
         }
         else if (opciones.sticker) {
             //opcion para dibujar un sticker
+            elemento = new Sticker(posicionesCursor, "../recursos/pikachu.png")
 
         }
         else if (opciones.borrador) {
@@ -114,52 +115,90 @@ function mientrasPrecionaClick(event) {
 
         }
         else {
-
+            console.error("Error: Opcion seleccionada no valida");
         }
-
-        /*const linea = new Linea(posicionesCursor, "blue");
-        linea.Dibujar(ctx);*/
-        //al finalizar el trazo de una linea le 
-        //decimo que el punto inicial de la siguiente es el final
-
-        ctx.clearRect(0,0, canvas.clientWidth, canvas.clientHeight)
-        elemento.Dibujar(ctx);
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        elemento.Dibujar(ctx, canvas);
         //posicionesCursor.iniciales.x = posicionesCursor.finales.x;
         //posicionesCursor.iniciales.y = posicionesCursor.finales.y;
     }
+
+
     //console.log(posicionesCursor);
 }
 
 function alSoltarClick(event) {
     console.log("se solto el boton click en el lienzo");
+    let elemento;
     posicionesCursor.finales.x = event.offsetX;
     posicionesCursor.finales.y = event.offsetY;
 
-    console.log(opciones)
-    const sticker = new Sticker(posicionesCursor, "../recursos/pikachu.png");
-    sticker.Dibujar(ctx);
+    //filtros color rojo
 
-    //const linea = new Linea(posicionesCursor, "blue");
-    //linea.Dibujar(ctx);
-    /* const cuadro = new Cuadrado(
-         posicionesCursor, "green", "red", 10
-     );
- 
-     figuras.push(cuadro);
- 
-     cuadro.Dibujar(ctx);
- 
-     console.log(figuras);*/
+    const imgData = ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
+    const data = imgData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        let rojo = data[i] // rojo
+        let verde = data[i + 1] //verde
+        let azul = data[i + 2] //azul
+        let alfa = data[i + 3] //transparencia
+
+        data[i] = rojo + 50;
+        data[i + 1] = verde * .8;
+        data[i + 2] = azul * .8;
+        data[i + 3] = alfa;
+    }
+
+    ctx.putImageData(imgData, 0, 0)
+
+    if (opciones.pincel) {
+        //opcion para dibujar con el pincel
+    }
+    else if (opciones.linea) {
+        //opcion para dibujar linea
+        elementos.push(new Linea(posicionesCursor, "blue", 5));
+    }
+    else if (opciones.cuadro) {
+        //opcion para dibujar un cudro
+        elementos.push(new Cuadrado(posicionesCursor, "blue", "red", 5));
+
+    }
+    else if (opciones.circulo) {
+        //opcion para dibujar un circulo
+        elementos.push(new Circulo(posicionesCursor, "blue", "red", 5));
+    }
+    else if (opciones.triangulo) {
+        //opcion para dibujar un triangulo
+
+    }
+    else if (opciones.sticker) {
+        //opcion para dibujar un sticker
+        elementos.push(new Sticker(posicionesCursor, "../recursos/pikachu.png"))
+
+    }
+    else if (opciones.borrador) {
+        //opcion para dibujar borrar
+
+    }
+    else {
+
+    }
+    console.log(elementos);
+
+    RenderizarElementos();
     presionado = false;
 }
 
 
-
-function dibujarLinea() {
+function RenderizarElementos() {
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    ctx.beginPath();
-    ctx.moveTo(posicionesCursor.iniciales.x, posicionesCursor.iniciales.y);
-    ctx.lineTo(posicionesCursor.finales.x, posicionesCursor.finales.y);
-    ctx.stroke();
+
+    for (let i = 0; i < elementos.length; i++) {
+        elementos[i].Dibujar(ctx);
+    }
 }
 
+function Limpiar() {
+    elementos = [];
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+}
